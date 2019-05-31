@@ -6,8 +6,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Linq;
-using System;
 using System.Windows.Input;
+using Syncfusion.ListView.XForms;
 
 namespace News_App
 {
@@ -20,15 +20,46 @@ namespace News_App
         {
             InitializeComponent();
 
-            RefreshCommand = new Command(Refresh);
+            RefreshCommand = new Command(Refresh, CanRefresh);
             //Don't know why this is needed, but doesn't work without it!
             OnPropertyChanged(nameof(RefreshCommand));
 
-            Refresh();
+            FeedPicker.ItemsSource = _Feeds.Keys.ToArray();
+            FeedPicker.Title = "Select Your Feed";
+            FeedPicker.SetBinding(Picker.SelectedItemProperty, nameof(SelectedFeed));
         }
 
+        private string _SelectedFeed;
         private readonly NewsArticleView _NewsArticleView = new NewsArticleView();
         private readonly ObservableCollection<RssSchema> _Articles = new ObservableCollection<RssSchema>();
+        private readonly Dictionary<string, string> _Feeds = new Dictionary<string, string>
+        {
+            {"BBC News UK", " https://feeds.bbci.co.uk/news/uk/rss.xml"},
+            {"BBC News Technology", "https://feeds.bbci.co.uk/news/technology/rss.xml"},
+            {"Reuters UK", "http://feeds.reuters.com/reuters/UKTopNews"},
+            {"Reuters Technology", "http://feeds.reuters.com/reuters/technologyNews"}
+        };
+
+        public string SelectedFeed
+        {
+            get
+            {
+                return _SelectedFeed;
+            }
+            set
+            {
+                if (value == _SelectedFeed)
+                    return;
+
+                _SelectedFeed = value;
+
+                OnPropertyChanged(nameof(SelectedFeed));
+
+                ((Command)RefreshCommand).ChangeCanExecute();
+
+                Refresh();
+            }
+        }
 
         public ICommand RefreshCommand
         {
@@ -67,18 +98,49 @@ namespace News_App
             ArticleListView.SelectedItems.Clear();
         }
 
+        private void SetIsBusy(bool isBusy)
+        {
+            IsBusy = isBusy;
+            ((Command)RefreshCommand).ChangeCanExecute();
+
+            if (IsBusy)
+            {
+                ArticleListView.RemoveBinding(SfListView.SelectedItemProperty);
+            }
+            else
+            {
+                ArticleListView.SetBinding(SfListView.SelectedItemProperty, nameof(SelectedArticle));
+            }
+        }
+
         private async void Refresh()
         {
-            var articles = await Parse("https://feeds.bbci.co.uk/news/uk/rss.xml");
+            SetIsBusy(true);
 
-            articles = articles.OrderByDescending(rssSchema => rssSchema.PublishDate);
-
-            Articles.Clear();
-
-            foreach (var article in articles)
+            try
             {
-                Articles.Add(article);
+                var url = _Feeds[(string)FeedPicker.SelectedItem];
+
+                var articles = await Parse(url);
+
+                articles = articles.OrderByDescending(rssSchema => rssSchema.PublishDate);
+
+                Articles.Clear();
+
+                foreach (var article in articles)
+                {
+                    Articles.Add(article);
+                }
             }
+            finally
+            {
+                SetIsBusy(false);
+            }
+        }
+
+        private bool CanRefresh()
+        {
+            return !IsBusy && !string.IsNullOrEmpty(SelectedFeed);
         }
 
         public async Task<IEnumerable<RssSchema>> Parse(string url)

@@ -12,7 +12,9 @@
         <ToolbarItem Name="RefreshMenuItem" Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical">
+        <Grid>
+            <StackLayout Orientation="Vertical">
+            <Picker x:Name="FeedPicker"/>
             <SearchBar x:Name="FilterText" HeightRequest="40"
                 Placeholder="Search here to filter"
                 TextChanged="FilterText_TextChanged"/>
@@ -53,5 +55,7 @@
                 </syncfusion:SfListView.ItemTemplate>
             </syncfusion:SfListView>
         </StackLayout>
+        <ActivityIndicator IsRunning="{Binding IsBusy}" HorizontalOptions="Center" VerticalOptions="Center"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
