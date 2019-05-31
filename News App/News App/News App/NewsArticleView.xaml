@@ -10,9 +10,12 @@
         <ToolbarItem Name="DownloadMenuItem" Text="Download Article" Order="Secondary" Command="{Binding DownloadCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <WebView x:Name="HtmlWebView" WidthRequest="1000" HeightRequest="1000"/>
-            <Label Text="{Binding DownloadStatus}" TextColor="Violet" BackgroundColor="DarkSlateGray"/>
-        </StackLayout>
+        <Grid>
+            <StackLayout>
+                <WebView x:Name="HtmlWebView" WidthRequest="1000" HeightRequest="1000"/>
+                <Label Text="{Binding DownloadStatus}" TextColor="Violet" BackgroundColor="DarkSlateGray"/>
+            </StackLayout>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" HorizontalOptions="Center" VerticalOptions="Center"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

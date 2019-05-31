@@ -14,12 +14,12 @@ namespace News_App
         {
             InitializeComponent();
 
-            ShareCommand = new Command(ShareLink);
-            //Don't know why this is needed, but doesn't work without it!
+            ShareCommand = new Command(ShareLink, CanShareLink);
+            //Don't know why it's needed, but doesn't work without it!
             OnPropertyChanged(nameof(ShareCommand));
 
-            DownloadCommand = new Command(DownloadLink);
-            //Don't know why this is needed, but doesn't work without it!
+            DownloadCommand = new Command(Download, CanDownload);
+            //Don't know why it's needed, but doesn't work without it!
             OnPropertyChanged(nameof(DownloadCommand));
 
             HtmlWebView.Navigated += HtmlWebView_Navigated;
@@ -31,20 +31,34 @@ namespace News_App
         private bool _IsDownloading;
         private object _Locker = new object();
 
+        private void SetIsBusy(bool isBusy)
+        {
+            IsBusy = isBusy;
+            ((Command)ShareCommand).ChangeCanExecute();
+            ((Command)DownloadCommand).ChangeCanExecute();
+        }
+
         private void HtmlWebView_Navigated(object sender, WebNavigatedEventArgs e)
         {
             _CurrentURL = e.Url;
+            SetIsBusy(false);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            SetIsBusy(true);
             DownloadStatus = null;
         }
 
         public ICommand ShareCommand
         {
             get; private set;
+        }
+
+        private bool CanShareLink()
+        {
+            return !IsBusy;
         }
 
         private void ShareLink()
@@ -69,7 +83,12 @@ namespace News_App
             get; private set;
         }
 
-        private void DownloadLink()
+        private bool CanDownload()
+        {
+            return !IsBusy;
+        }
+
+        private void Download()
         {
             if (string.IsNullOrEmpty(_CurrentURL))
                 return;
