@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using ImageCircle.Forms.Plugin.iOS;
+using Lottie.Forms.iOS.Renderers;
 using Syncfusion.ListView.XForms.iOS;
 using UIKit;
 
@@ -24,6 +26,8 @@ namespace News_App.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            AnimationViewRenderer.Init();
+            ImageCircleRenderer.Init();
             SfListViewRenderer.Init();
             LoadApplication(new App());
 

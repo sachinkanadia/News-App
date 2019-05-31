@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="News_App.App">
     <Application.Resources>
-
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" Value="DarkSlateGray"></Setter>
+            <Setter Property="BarTextColor" Value="Violet"></Setter>
+        </Style>
     </Application.Resources>
 </Application>

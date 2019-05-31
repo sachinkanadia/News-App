@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Linq;
+using System;
 
 namespace News_App
 {
@@ -16,7 +18,6 @@ namespace News_App
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = this;
         }
 
         private readonly NewsArticleView _NewsArticleView = new NewsArticleView();
@@ -53,13 +54,22 @@ namespace News_App
             base.OnAppearing();
 
             var articles = await Parse("https://feeds.bbci.co.uk/news/uk/rss.xml");
-            
+
+            articles = articles.OrderByDescending(rssSchema => rssSchema.PublishDate);
+
+            Articles.Clear();
+
             foreach(var article in articles)
             {
                 Articles.Add(article);
             }
         }
 
+        /// <summary>
+        /// Resolve 'Target of invocation exception here'
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<RssSchema>> Parse(string url)
         {
             string feed = null;
