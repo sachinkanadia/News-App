@@ -6,11 +6,13 @@
              x:Name="NewsArticle"
              BindingContext="{x:Reference NewsArticle}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Name="ShareMenuItem" Text="Share Article" Order="Secondary" Command="{Binding ShareCommand}" Clicked="ShareMenuItem_Clicked"/>
+        <ToolbarItem Name="ShareMenuItem" Text="Share Article" Order="Secondary" Command="{Binding ShareCommand}"/>
+        <ToolbarItem Name="DownloadMenuItem" Text="Download Article" Order="Secondary" Command="{Binding DownloadCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <WebView x:Name="HtmlWebView" WidthRequest="1000" HeightRequest="1000"/>
+            <Label Text="{Binding DownloadStatus}" TextColor="Violet" BackgroundColor="DarkSlateGray"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -12,7 +12,10 @@
         <ToolbarItem Name="RefreshMenuItem" Text="Refresh" Order="Secondary" Clicked="RefreshMenuItem_Clicked"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid>
+        <StackLayout Orientation="Vertical">
+            <SearchBar x:Name="FilterText" HeightRequest="40"
+                Placeholder="Search here to filter"
+                TextChanged="FilterText_TextChanged"/>
             <syncfusion:SfListView
                             x:Name="ArticleListView"
                             ItemsSource="{Binding Articles}" ItemSize="250" ItemSpacing="20" 
@@ -49,6 +52,6 @@
                     </DataTemplate>
                 </syncfusion:SfListView.ItemTemplate>
             </syncfusion:SfListView>
-        </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

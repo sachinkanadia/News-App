@@ -5,6 +5,7 @@ using System.Linq;
 using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
 using Lottie.Forms.iOS.Renderers;
+using Plugin.DownloadManager;
 using Syncfusion.ListView.XForms.iOS;
 using UIKit;
 
@@ -32,6 +33,15 @@ namespace News_App.iOS
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
+        }
+
+        /**
+         * Save the completion-handler we get when the app opens from the background.
+         * This method informs iOS that the app has finished all internal processing and can sleep again.
+         */
+        public override void HandleEventsForBackgroundUrl(UIApplication application, string sessionIdentifier, Action completionHandler)
+        {
+            CrossDownloadManager.BackgroundSessionCompletionHandler = completionHandler;
         }
     }
 }

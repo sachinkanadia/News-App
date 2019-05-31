@@ -91,5 +91,28 @@ namespace News_App
         {
             Refresh();
         }
+
+        private void FilterText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ArticleListView.DataSource != null)
+            {
+                this.ArticleListView.DataSource.Filter = FilterArticles;
+                this.ArticleListView.DataSource.RefreshFilter();
+            }
+        }
+
+        private bool FilterArticles(object obj)
+        {
+            if (FilterText == null || FilterText.Text == null)
+                return true;
+
+            var article = obj as RssSchema;
+
+            if (article.Title.ToLower().Contains(FilterText.Text.ToLower())
+                 || article.Title.ToLower().Contains(FilterText.Text.ToLower()))
+                return true;
+            else
+                return false;
+        }
     }
 }
