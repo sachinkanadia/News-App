@@ -136,7 +136,7 @@
       <Version>3.0.0.5</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="3.6.0.264807" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.0.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\News App\News App.csproj">

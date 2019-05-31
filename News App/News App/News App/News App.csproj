@@ -16,7 +16,7 @@
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="17.1.0.49" />
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle" Version="3.0.0.5" />
     <PackageReference Include="Xamarin.Forms" Version="3.6.0.264807" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.0.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -18,6 +18,8 @@ namespace News_App
         public MainPage()
         {
             InitializeComponent();
+
+            Refresh();
         }
 
         private readonly NewsArticleView _NewsArticleView = new NewsArticleView();
@@ -38,38 +40,37 @@ namespace News_App
             }
             set
             {
-                if (_SelectedArticle == value)
-                    return;
-
                 _SelectedArticle = value;
                 OnPropertyChanged(nameof(SelectedArticle));
+
+                if (_SelectedArticle == null)
+                    return;
 
                 _NewsArticleView.SetSource(_SelectedArticle.FeedUrl);
                 this.Navigation.PushAsync(_NewsArticleView, true);
             }
         }
 
-        protected async override void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
+            ArticleListView.SelectedItems.Clear();
+        }
 
+        private async void Refresh()
+        {
             var articles = await Parse("https://feeds.bbci.co.uk/news/uk/rss.xml");
 
             articles = articles.OrderByDescending(rssSchema => rssSchema.PublishDate);
 
             Articles.Clear();
 
-            foreach(var article in articles)
+            foreach (var article in articles)
             {
                 Articles.Add(article);
             }
         }
 
-        /// <summary>
-        /// Resolve 'Target of invocation exception here'
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
         public async Task<IEnumerable<RssSchema>> Parse(string url)
         {
             string feed = null;
@@ -84,6 +85,11 @@ namespace News_App
             var parser = new RssParser();
             var rss = parser.Parse(feed);
             return rss;
+        }
+
+        private void RefreshMenuItem_Clicked(object sender, EventArgs e)
+        {
+            Refresh();
         }
     }
 }

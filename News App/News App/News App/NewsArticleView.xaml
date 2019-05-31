@@ -2,8 +2,15 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="News_App.NewsArticleView"
-             Title="News Article">
+             Title="News Article"
+             x:Name="NewsArticle"
+             BindingContext="{x:Reference NewsArticle}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="ShareMenuItem" Text="Share Article" Order="Secondary" Command="{Binding ShareCommand}" Clicked="ShareMenuItem_Clicked"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <WebView x:Name="HtmlWebView" WidthRequest="1000" HeightRequest="1000"/>
+        <StackLayout>
+            <WebView x:Name="HtmlWebView" WidthRequest="1000" HeightRequest="1000"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

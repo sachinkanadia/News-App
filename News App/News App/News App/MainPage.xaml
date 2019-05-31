@@ -8,11 +8,16 @@
              x:Name="NewsFeeds"
              Title="News"
              BindingContext="{x:Reference NewsFeeds}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="RefreshMenuItem" Text="Refresh" Order="Secondary" Clicked="RefreshMenuItem_Clicked"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
-            <syncfusion:SfListView ItemsSource="{Binding Articles}" ItemSize="250" ItemSpacing="20" 
-                           SelectionMode="Single" SelectionBackgroundColor="Transparent" BackgroundColor="LightGray"
-                           SelectedItem="{Binding SelectedArticle, Mode=OneWayToSource}">
+            <syncfusion:SfListView
+                            x:Name="ArticleListView"
+                            ItemsSource="{Binding Articles}" ItemSize="250" ItemSpacing="20" 
+                            SelectionMode="Single" SelectionGesture="Tap" SelectionBackgroundColor="Transparent" BackgroundColor="LightGray"
+                            SelectedItem="{Binding SelectedArticle, Mode=OneWayToSource}">
                 <syncfusion:SfListView.ItemTemplate>
                     <DataTemplate>
                         <Frame CornerRadius="20" BorderColor="Transparent" BackgroundColor="DarkSlateGray">
