@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Linq;
 using System;
+using System.Windows.Input;
 
 namespace News_App
 {
@@ -19,11 +20,20 @@ namespace News_App
         {
             InitializeComponent();
 
+            RefreshCommand = new Command(Refresh);
+            //Don't know why this is needed, but doesn't work without it!
+            OnPropertyChanged(nameof(RefreshCommand));
+
             Refresh();
         }
 
         private readonly NewsArticleView _NewsArticleView = new NewsArticleView();
         private readonly ObservableCollection<RssSchema> _Articles = new ObservableCollection<RssSchema>();
+
+        public ICommand RefreshCommand
+        {
+            get; private set;
+        }
 
         public ObservableCollection<RssSchema> Articles
         {
@@ -85,11 +95,6 @@ namespace News_App
             var parser = new RssParser();
             var rss = parser.Parse(feed);
             return rss;
-        }
-
-        private void RefreshMenuItem_Clicked(object sender, EventArgs e)
-        {
-            Refresh();
         }
 
         private void FilterText_TextChanged(object sender, TextChangedEventArgs e)

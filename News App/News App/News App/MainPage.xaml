@@ -9,7 +9,7 @@
              Title="News"
              BindingContext="{x:Reference NewsFeeds}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Name="RefreshMenuItem" Text="Refresh" Order="Secondary" Clicked="RefreshMenuItem_Clicked"/>
+        <ToolbarItem Name="RefreshMenuItem" Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
@@ -23,7 +23,7 @@
                             SelectedItem="{Binding SelectedArticle, Mode=OneWayToSource}">
                 <syncfusion:SfListView.ItemTemplate>
                     <DataTemplate>
-                        <Frame CornerRadius="20" BorderColor="Transparent" BackgroundColor="DarkSlateGray">
+                        <Frame CornerRadius="20" BorderColor="Transparent" BackgroundColor="DarkSlateGray" HasShadow="False">
                             <Grid Padding="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="0.1*" />
@@ -44,7 +44,7 @@
                                     AutoPlay="True"
                                     WidthRequest="50"
                                     HorizontalOptions="End"/>
-                                <abstractions:CircleImage Grid.Row="1" Grid.Column="0" Source="{Binding ImageUrl}" Aspect="AspectFill" WidthRequest="70" HeightRequest="70" Margin="10"/>
+                                <abstractions:CircleImage Grid.Row="1" Grid.Column="0" Source="{Binding ImageUrl}" Aspect="AspectFill" WidthRequest="60" HeightRequest="60" Margin="10"/>
                                 <Label Grid.Row="1" Grid.Column="1" Text="{Binding Title}" FontAttributes="Bold" TextColor="Violet" FontSize="17" VerticalTextAlignment="Center"/>
                                 <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Summary}" TextColor="Violet" FontSize="15"/>
                             </Grid>
