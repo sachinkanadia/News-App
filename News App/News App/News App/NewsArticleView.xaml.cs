@@ -29,7 +29,7 @@ namespace News_App
         private string _DownloadStatus;
         private IDownloadFile _DownloadFile;
         private bool _IsDownloading;
-        private object _Locker = new object();
+        private readonly object _Locker = new object();
 
         private void SetIsBusy(bool isBusy)
         {
