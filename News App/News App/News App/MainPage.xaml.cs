@@ -8,11 +8,18 @@ using Xamarin.Forms;
 using System.Linq;
 using System.Windows.Input;
 using Syncfusion.ListView.XForms;
-
 namespace News_App
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
+
+    /// <summary>
+    /// Performance was optimzed by using:
+    /// 1) Xaml Compilation
+    /// 2) Compiled Bindings
+    /// 3) Fast Renderers (applies to Android only)
+    /// 4) Layout Compression
+    /// </summary>
     [DesignTimeVisible(true)]
     public partial class MainPage : ContentPage
     {

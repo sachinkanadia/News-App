@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 using ImageCircle.Forms.Plugin.Droid;
 using Lottie.Forms.Droid;
+using Xamarin.Forms;
 
 namespace News_App.Droid
 {
@@ -22,7 +23,8 @@ namespace News_App.Droid
             base.OnCreate(savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Forms.SetFlags("FastRenderers_Experimental");
+            Forms.Init(this, savedInstanceState);
             AnimationViewRenderer.Init();
             ImageCircleRenderer.Init();
             LoadApplication(new App());

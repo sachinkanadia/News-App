@@ -4,6 +4,8 @@
              xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              xmlns:abstractions="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+             xmlns:local="clr-namespace:News_App"
+             xmlns:rss="clr-namespace:Microsoft.Toolkit.Parsers.Rss;assembly=Microsoft.Toolkit.Parsers"
              x:Class="News_App.MainPage"
              x:Name="NewsFeeds"
              Title="News"
@@ -12,50 +14,52 @@
         <ToolbarItem Name="RefreshMenuItem" Text="Refresh" Order="Secondary" Command="{Binding RefreshCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid>
-            <StackLayout Orientation="Vertical">
-            <Picker x:Name="FeedPicker"/>
-            <SearchBar x:Name="FilterText" HeightRequest="40"
-                Placeholder="Search here to filter"
-                TextChanged="FilterText_TextChanged"/>
-            <syncfusion:SfListView
+        <Grid x:DataType="local:MainPage" CompressedLayout.IsHeadless="True">
+            <StackLayout Orientation="Vertical" CompressedLayout.IsHeadless="True">
+                <Picker x:Name="FeedPicker"/>
+                <SearchBar x:Name="FilterText" HeightRequest="40"
+                    Placeholder="Search here to filter"
+                    TextChanged="FilterText_TextChanged"/>
+                <syncfusion:SfListView
                             x:Name="ArticleListView"
-                            ItemsSource="{Binding Articles}" ItemSize="250" ItemSpacing="20" 
+                            Orientation="Vertical"
+                            ItemsSource="{Binding Articles}" ItemSpacing="20" 
                             SelectionMode="Single" SelectionGesture="Tap" SelectionBackgroundColor="Transparent" BackgroundColor="LightGray"
-                            SelectedItem="{Binding SelectedArticle, Mode=OneWayToSource}">
-                <syncfusion:SfListView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame CornerRadius="20" BorderColor="Transparent" BackgroundColor="DarkSlateGray" HasShadow="False">
-                            <Grid Padding="10">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="0.1*" />
-                                    <RowDefinition Height="0.6*" />
-                                    <RowDefinition Height="0.3*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding PublishDate, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="Violet" FontSize="15"/>
-                                <forms:AnimationView 
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    x:Name="AnimationView"
-                                    Animation="192-swipe-right-indicator.json"
-                                    Loop="True"
-                                    AutoPlay="True"
-                                    WidthRequest="50"
-                                    HorizontalOptions="End"/>
-                                <abstractions:CircleImage Grid.Row="1" Grid.Column="0" Source="{Binding ImageUrl}" Aspect="AspectFill" WidthRequest="60" HeightRequest="60" Margin="10"/>
-                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Title}" FontAttributes="Bold" TextColor="Violet" FontSize="17" VerticalTextAlignment="Center"/>
-                                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Summary}" TextColor="Violet" FontSize="15"/>
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </syncfusion:SfListView.ItemTemplate>
-            </syncfusion:SfListView>
-        </StackLayout>
-        <ActivityIndicator IsRunning="{Binding IsBusy}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            SelectedItem="{Binding SelectedArticle, Mode=OneWayToSource}"
+                            AutoFitMode="Height">
+                    <syncfusion:SfListView.ItemTemplate>
+                        <DataTemplate x:DataType="rss:RssSchema">
+                            <Frame CornerRadius="20" BorderColor="Transparent" BackgroundColor="DarkSlateGray" HasShadow="False">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackLayout Orientation="Horizontal" Grid.Row="0">
+                                        <Label Text="{Binding PublishDate, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="Violet" FontSize="15"/>
+                                        <forms:AnimationView 
+                                            x:Name="AnimationView"
+                                            Animation="192-swipe-right-indicator.json"
+                                            Loop="True"
+                                            AutoPlay="True"
+                                            WidthRequest="50"
+                                            HeightRequest="20"
+                                            VerticalOptions="Start"
+                                            HorizontalOptions="EndAndExpand"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal" Grid.Row="1">
+                                        <abstractions:CircleImage Source="{Binding ImageUrl}" Aspect="AspectFill" WidthRequest="60" HeightRequest="60" Margin="10"/>
+                                        <Label Text="{Binding Title}" FontAttributes="Bold" TextColor="Violet" FontSize="17" VerticalTextAlignment="Center"/>
+                                    </StackLayout>
+                                    <Label Grid.Row="2" Text="{Binding Summary}" TextColor="Violet" FontSize="15"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </syncfusion:SfListView.ItemTemplate>
+                </syncfusion:SfListView>
+            </StackLayout>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" HorizontalOptions="Center" VerticalOptions="Center"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
